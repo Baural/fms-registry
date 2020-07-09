@@ -1,4 +1,4 @@
-package kz.fms.registry.search;
+package kz.fms.registry.repository;
 
 import kz.fms.registry.entity.Registry;
 import org.springframework.data.domain.Page;
@@ -19,7 +19,7 @@ public interface RegistryRepository extends JpaRepository<Registry, Long> {
             "(:patient is null or r.patient.id=:patient) and " +
             "(:clinic is null or r.clinic.id=:clinic)"
     )
-    Page<Registry> findAllByParams(@Param("patient") Long patient,
+    Page<Registry> findByParams(@Param("patient") Long patient,
                                    @Param("clinic") Long clinic,
                                    Pageable pageable
     );
