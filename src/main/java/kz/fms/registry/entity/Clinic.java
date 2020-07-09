@@ -36,7 +36,7 @@ public class Clinic {
 
 
     @ManyToOne
-    @JoinColumn(name = "region", referencedColumnName = "id")
+    @JoinColumn(name = "region_id", referencedColumnName = "id")
     public Region getRegion() {
         return region;
     }

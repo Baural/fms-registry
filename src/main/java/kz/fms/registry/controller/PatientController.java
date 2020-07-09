@@ -61,16 +61,22 @@ public class PatientController {
     @PutMapping("/update")
     public ResponseEntity update(@RequestBody Patient patient) {
 
-        MyLogger.showMethodName("PatientController: update() ---------------------------------------------------------- ");
-
-
         if (patient.getId() == null || patient.getId() == 0) {
             return new ResponseEntity("missed param: id", HttpStatus.NOT_ACCEPTABLE);
         }
 
         if (patient.getIin() == null || patient.getIin().trim().length() == 0) {
-            return new ResponseEntity("missed param: title", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity("missed param: iin", HttpStatus.NOT_ACCEPTABLE);
         }
+
+        if (patient.getLastname() == null || patient.getLastname().trim().length() == 0) {
+            return new ResponseEntity("missed param: lastname", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (patient.getFirstname() == null || patient.getFirstname().trim().length() == 0) {
+            return new ResponseEntity("missed param: firstname", HttpStatus.NOT_ACCEPTABLE);
+        }
+
 
         patientService.update(patient);
 
@@ -81,17 +87,30 @@ public class PatientController {
     @GetMapping("/id/{id}")
     public ResponseEntity<Patient> findById(@PathVariable Long id) {
 
-        MyLogger.showMethodName("PatientController: findById() ---------------------------------------------------------- ");
-
 
         Patient patient = null;
-
 
         try {
             patient = patientService.findById(id);
         } catch (NoSuchElementException e) { // если объект не будет найден
             e.printStackTrace();
             return new ResponseEntity("id=" + id + " not found", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        return ResponseEntity.ok(patient);
+    }
+
+    @GetMapping("/iin/{iin}")
+    public ResponseEntity<List<Patient>> findByIin(@PathVariable String iin) {
+
+
+        List<Patient> patient = null;
+
+        try {
+            patient = patientService.findByIin(iin);
+        } catch (NoSuchElementException e) { // если объект не будет найден
+            e.printStackTrace();
+            return new ResponseEntity("iin=" + iin + " not found", HttpStatus.NOT_ACCEPTABLE);
         }
 
         return ResponseEntity.ok(patient);

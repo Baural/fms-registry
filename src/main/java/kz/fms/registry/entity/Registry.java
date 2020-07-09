@@ -43,14 +43,14 @@ public class Registry {
     }
 
     @ManyToOne
-    @JoinColumn(name = "patient", referencedColumnName = "id")
+    @JoinColumn(name = "patient_id", referencedColumnName = "id")
     public Patient getPatient() {
         return patient;
     }
 
 
     @ManyToOne
-    @JoinColumn(name = "clinic", referencedColumnName = "id")
+    @JoinColumn(name = "clinic_id", referencedColumnName = "id")
     public Clinic getClinic() {
         return clinic;
     }

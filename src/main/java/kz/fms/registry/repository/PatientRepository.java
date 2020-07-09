@@ -17,7 +17,7 @@ import java.util.List;
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
     @Query("SELECT c FROM Patient c where " +
-            "(:iin is null or :iin='' or lower(c.iin) like lower(concat('%', :iin,'%')))  " +
+            "(:iin is null or :iin='' or upper(c.iin) like upper(concat('%', :iin,'%')))  " +
             "order by c.iin asc")
     List<Patient> findByIin(@Param("iin") String title);
 
