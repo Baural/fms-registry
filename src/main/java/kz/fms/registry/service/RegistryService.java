@@ -43,8 +43,8 @@ public class RegistryService {
     }
 
 
-    public Page findByParams(Long patient, Long clinic, PageRequest paging) {
-        return repository.findByParams(patient, clinic, paging);
+    public Page findByParams(Long patientId, Long clinicId, PageRequest paging) {
+        return repository.findByParams(patientId, clinicId, paging);
     }
 
     public Registry findById(Long id) {

@@ -1,6 +1,9 @@
 package kz.fms.registry.controller;
 
+import kz.fms.registry.entity.Clinic;
+import kz.fms.registry.entity.Patient;
 import kz.fms.registry.entity.Registry;
+import kz.fms.registry.search.RegistrySearchValues;
 import kz.fms.registry.service.RegistryService;
 import kz.fms.registry.util.MyLogger;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -11,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -23,7 +27,7 @@ import java.util.NoSuchElementException;
 @RequestMapping("/registry")
 @CrossOrigin(origins = "http://localhost:4200")
 public class RegistryController {
-    
+
     private final RegistryService registryService;
 
     public RegistryController(RegistryService registryService) {
@@ -34,26 +38,21 @@ public class RegistryController {
     @GetMapping("/all")
     public ResponseEntity<List<Registry>> findAll() {
 
-        MyLogger.showMethodName("registry: findAll() ---------------------------------------------------------------- ");
-
         return ResponseEntity.ok(registryService.findAll());
     }
-
 
     @PostMapping("/add")
     public ResponseEntity<Registry> add(@RequestBody Registry registry) {
 
-        MyLogger.showMethodName("registry: add() ---------------------------------------------------------------- ");
-
-
         if (registry.getId() != null && registry.getId() != 0) {
-
-            return new ResponseEntity("redundant param: id MUST be null", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity("incorrect param: id MUST be null", HttpStatus.NOT_ACCEPTABLE);
         }
 
-
-        if (registry.getTitle() == null || registry.getTitle().trim().length() == 0) {
-            return new ResponseEntity("missed param: title", HttpStatus.NOT_ACCEPTABLE);
+        if (registry.getPatientId() == null) {
+            return new ResponseEntity("missed param: patient", HttpStatus.NOT_ACCEPTABLE);
+        }
+        if (registry.getClinicId() == null) {
+            return new ResponseEntity("missed param: clinic", HttpStatus.NOT_ACCEPTABLE);
         }
 
         return ResponseEntity.ok(registryService.add(registry));
@@ -63,18 +62,16 @@ public class RegistryController {
     @PutMapping("/update")
     public ResponseEntity<Registry> update(@RequestBody Registry registry) {
 
-        MyLogger.showMethodName("registry: update() ---------------------------------------------------------------- ");
-
-
-        if (registry.getId() == null || registry.getId() == 0) {
-            return new ResponseEntity("missed param: id", HttpStatus.NOT_ACCEPTABLE);
+        if (registry.getId() != null && registry.getId() != 0) {
+            return new ResponseEntity("incorrect param: id MUST be null", HttpStatus.NOT_ACCEPTABLE);
         }
 
-
-        if (registry.getTitle() == null || registry.getTitle().trim().length() == 0) {
-            return new ResponseEntity("missed param: title", HttpStatus.NOT_ACCEPTABLE);
+        if (registry.getPatientId() == null) {
+            return new ResponseEntity("missed param: patient", HttpStatus.NOT_ACCEPTABLE);
         }
-
+        if (registry.getClinicId() == null) {
+            return new ResponseEntity("missed param: clinic", HttpStatus.NOT_ACCEPTABLE);
+        }
 
         registryService.update(registry);
 
@@ -84,8 +81,6 @@ public class RegistryController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
-
-        MyLogger.showMethodName("registry: delete() ---------------------------------------------------------------- ");
 
         try {
             registryService.deleteById(id);
@@ -118,16 +113,9 @@ public class RegistryController {
     @PostMapping("/search")
     public ResponseEntity<Page<Registry>> search(@RequestBody RegistrySearchValues registrySearchValues) {
 
-        MyLogger.showMethodName("registry: search() ---------------------------------------------------------------- ");
+        Long patientId = registrySearchValues.getPatientId() != null ? registrySearchValues.getPatientId() : null;
 
-
-        String title = registrySearchValues.getTitle() != null ? registrySearchValues.getTitle() : null;
-
-        // конвертируем Boolean в Integer
-        Integer completed = registrySearchValues.getCompleted() != null ? registrySearchValues.getCompleted() : null;
-
-        Long priorityId = registrySearchValues.getPriorityId() != null ? registrySearchValues.getPriorityId() : null;
-        Long categoryId = registrySearchValues.getCategoryId() != null ? registrySearchValues.getCategoryId() : null;
+        Long clinicId = registrySearchValues.getClinicId() != null ? registrySearchValues.getClinicId() : null;
 
         String sortColumn = registrySearchValues.getSortColumn() != null ? registrySearchValues.getSortColumn() : null;
         String sortDirection = registrySearchValues.getSortDirection() != null ? registrySearchValues.getSortDirection() : null;
@@ -145,11 +133,8 @@ public class RegistryController {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
 
 
-        Page result = registryService.findByParams(title, completed, priorityId, categoryId, pageRequest);
-
+        Page result = registryService.findByParams(patientId, clinicId, pageRequest);
 
         return ResponseEntity.ok(result);
-
     }
-
 }

@@ -21,8 +21,8 @@ public class Registry {
     private Integer id;
     private Date publicationDate;
     private Date deadDate;
-    private Patient patient;
-    private Clinic clinic;
+    private Patient patientId;
+    private Clinic clinicId;
 
     @Id
     @Column(name = "id")
@@ -44,15 +44,15 @@ public class Registry {
 
     @ManyToOne
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
-    public Patient getPatient() {
-        return patient;
+    public Patient getPatientId() {
+        return patientId;
     }
 
 
     @ManyToOne
     @JoinColumn(name = "clinic_id", referencedColumnName = "id")
-    public Clinic getClinic() {
-        return clinic;
+    public Clinic getClinicId() {
+        return clinicId;
     }
 
 }
