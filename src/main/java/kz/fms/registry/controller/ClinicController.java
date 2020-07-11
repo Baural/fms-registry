@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping ("/clinic")
+@RequestMapping("/clinic")
 public class ClinicController {
 
     // доступ к данным из БД
@@ -35,7 +35,7 @@ public class ClinicController {
 
 
     @PostMapping("/add")
-    public ResponseEntity<Clinic> add(@RequestBody Clinic clinic){
+    public ResponseEntity<Clinic> add(@RequestBody Clinic clinic) {
 
 
         MyLogger.showMethodName("ClinicController: add() ---------------------------------------------------------- ");
@@ -59,7 +59,7 @@ public class ClinicController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity update(@RequestBody Clinic clinic){
+    public ResponseEntity update(@RequestBody Clinic clinic) {
 
         MyLogger.showMethodName("ClinicController: update() ---------------------------------------------------------- ");
 
@@ -93,14 +93,14 @@ public class ClinicController {
 
         Clinic clinic = null;
 
-        try{
+        try {
             clinic = clinicService.findById(id);
-        }catch (NoSuchElementException e){ // если объект не будет найден
+        } catch (NoSuchElementException e) { // если объект не будет найден
             e.printStackTrace();
-            return new ResponseEntity("id="+id+" not found", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity("id=" + id + " not found", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return  ResponseEntity.ok(clinic);
+        return ResponseEntity.ok(clinic);
     }
 
 
@@ -115,26 +115,20 @@ public class ClinicController {
         // здесь показан пример, как можно обрабатывать исключение и отправлять свой текст/статус
         try {
             clinicService.deleteById(id);
-        }catch (EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
-            return new ResponseEntity("id="+id+" not found", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity("id=" + id + " not found", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return new ResponseEntity(HttpStatus.OK); // просто отправляем статус 200 (операция прошла успешно)
+        return new ResponseEntity(HttpStatus.OK);
     }
 
-    // поиск по любым параметрам ClinicSearchValues
     @PostMapping("/search")
-    public ResponseEntity<List<Clinic>> search(@RequestBody ClinicSearchValues clinicSearchValues){
+    public ResponseEntity<List<Clinic>> search(@RequestBody ClinicSearchValues clinicSearchValues) {
 
         MyLogger.showMethodName("ClinicController: search() ---------------------------------------------------------- ");
 
-
-        // если вместо текста будет пусто или null - вернутся все категории
         return ResponseEntity.ok(clinicService.findByName(clinicSearchValues.getName()));
     }
-
-
-
 
 }

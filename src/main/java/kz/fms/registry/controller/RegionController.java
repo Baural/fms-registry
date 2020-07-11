@@ -87,22 +87,6 @@ public class RegionController {
         return ResponseEntity.ok(region);
     }
 
-    @GetMapping("/name/{name}")
-    public ResponseEntity<List<Region>> findByIin(@PathVariable String name) {
-
-        List<Region> region = null;
-
-        try {
-            region = regionService.findByName(name);
-        } catch (NoSuchElementException e) { // если объект не будет найден
-            e.printStackTrace();
-            return new ResponseEntity("name=" + name + " not found", HttpStatus.NOT_ACCEPTABLE);
-        }
-
-        return ResponseEntity.ok(region);
-    }
-
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
 

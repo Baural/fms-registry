@@ -1,6 +1,7 @@
 package kz.fms.registry.service;
 
 
+import kz.fms.registry.entity.Patient;
 import kz.fms.registry.entity.Region;
 import kz.fms.registry.repository.RegionRepository;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,6 @@ public class RegionService {
         this.repository = repository;
     }
 
-
     public List<Region> findAll() {
         return repository.findAll();
     }
@@ -31,21 +31,19 @@ public class RegionService {
         return repository.save(region);
     }
 
-    public Region update(Region region){
+    public Region update(Region region) {
         return repository.save(region);
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         repository.deleteById(id);
     }
 
-
-    public Region findById(Long id){
+    public Region findById(Long id) {
         return repository.findById(id).get();
     }
-
     public List<Region> findByName(String name){
-        return repository.findByName();
+        return repository.findByName(name);
     }
 
 }
