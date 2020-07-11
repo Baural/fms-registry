@@ -1,10 +1,10 @@
 package kz.fms.registry.repository;
 
 import kz.fms.registry.entity.Clinic;
-import kz.fms.registry.entity.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * @date on 09.07.2020
  */
 
-
+@Repository
 public interface ClinicRepository extends JpaRepository<Clinic, Long> {
 
     @Query("SELECT c FROM Clinic c where " +
@@ -21,6 +21,5 @@ public interface ClinicRepository extends JpaRepository<Clinic, Long> {
             "order by c.name asc")
     List<Clinic> findByName(@Param("name") String name);
 
-    List<Clinic> findAllByOrderByIinAsc();
 }
 

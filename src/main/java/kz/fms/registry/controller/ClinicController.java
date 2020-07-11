@@ -12,18 +12,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-/**
- * @author baur
- * @date on 08.07.2020
- */
-
 @RestController
-@RequestMapping("/clinic")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping ("/clinic")
 public class ClinicController {
 
+    // доступ к данным из БД
     private ClinicService clinicService;
 
+    // автоматическое внедрение экземпляра класса через конструктор
+    // не используем @Autowired ля переменной класса, т.к. "Field injection is not recommended "
     public ClinicController(ClinicService clinicService) {
         this.clinicService = clinicService;
     }
@@ -32,12 +29,13 @@ public class ClinicController {
     @GetMapping("/all")
     public List<Clinic> findAll() {
 
+        MyLogger.showMethodName("ClinicController: findAll() ---------------------------------------------------------- ");
         return clinicService.findAll();
     }
 
 
     @PostMapping("/add")
-    public ResponseEntity<Clinic> add(@RequestBody Clinic clinic) {
+    public ResponseEntity<Clinic> add(@RequestBody Clinic clinic){
 
 
         MyLogger.showMethodName("ClinicController: add() ---------------------------------------------------------- ");
@@ -57,13 +55,13 @@ public class ClinicController {
             return new ResponseEntity("missed param: region id", HttpStatus.NOT_ACCEPTABLE);
         }
 
-
-
         return ResponseEntity.ok(clinicService.add(clinic));
     }
 
     @PutMapping("/update")
-    public ResponseEntity update(@RequestBody Clinic clinic) {
+    public ResponseEntity update(@RequestBody Clinic clinic){
+
+        MyLogger.showMethodName("ClinicController: update() ---------------------------------------------------------- ");
 
         if (clinic.getId() != null && clinic.getId() != 0) {
 
@@ -80,53 +78,63 @@ public class ClinicController {
         }
 
 
+        // save работает как на добавление, так и на обновление
         clinicService.update(clinic);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK); // просто отправляем статус 200 (операция прошла успешно)
     }
 
-
+    // параметр id передаются не в BODY запроса, а в самом URL
     @GetMapping("/id/{id}")
     public ResponseEntity<Clinic> findById(@PathVariable Long id) {
+
+        MyLogger.showMethodName("ClinicController: findById() ---------------------------------------------------------- ");
 
 
         Clinic clinic = null;
 
-        try {
+        try{
             clinic = clinicService.findById(id);
-        } catch (NoSuchElementException e) { // если объект не будет найден
+        }catch (NoSuchElementException e){ // если объект не будет найден
             e.printStackTrace();
-            return new ResponseEntity("id=" + id + " not found", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity("id="+id+" not found", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return ResponseEntity.ok(clinic);
+        return  ResponseEntity.ok(clinic);
     }
 
 
-
+    // параметр id передаются не в BODY запроса, а в самом URL
     @DeleteMapping("/delete/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
 
         MyLogger.showMethodName("ClinicController: delete() ---------------------------------------------------------- ");
 
+
+        // можно обойтись и без try-catch, тогда будет возвращаться полная ошибка (stacktrace)
+        // здесь показан пример, как можно обрабатывать исключение и отправлять свой текст/статус
         try {
             clinicService.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
+        }catch (EmptyResultDataAccessException e){
             e.printStackTrace();
-            return new ResponseEntity("id=" + id + " not found", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity("id="+id+" not found", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK); // просто отправляем статус 200 (операция прошла успешно)
     }
 
+    // поиск по любым параметрам ClinicSearchValues
     @PostMapping("/search")
-    public ResponseEntity<List<Clinic>> search(@RequestBody ClinicSearchValues clinicSearchValues) {
+    public ResponseEntity<List<Clinic>> search(@RequestBody ClinicSearchValues clinicSearchValues){
 
         MyLogger.showMethodName("ClinicController: search() ---------------------------------------------------------- ");
 
 
+        // если вместо текста будет пусто или null - вернутся все категории
         return ResponseEntity.ok(clinicService.findByName(clinicSearchValues.getName()));
     }
+
+
 
 
 }

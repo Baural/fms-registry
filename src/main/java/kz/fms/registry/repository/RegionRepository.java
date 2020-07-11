@@ -14,14 +14,10 @@ import java.util.List;
  */
 
 @Repository
-public interface PatientRepository extends JpaRepository<Patient, Long> {
+public interface RegionRepository extends JpaRepository<Patient, Long> {
 
     @Query("SELECT c FROM Patient c where " +
-            "(:iin is null or :iin='' or c.iin like concat('%', :iin,'%'))  " +
+            "(:name is null or :name='' or upper(c.iin) like upper(concat('%', :name,'%')))  " +
             "order by c.iin asc")
-    List<Patient> findByIin(@Param("iin") String iin);
-
-    // получить все значения, сортировка по названию
-    List<Patient> findAllByOrderByIinAsc();
-
+    List<Patient> findByName(@Param("name") String name);
 }
