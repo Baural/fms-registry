@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 /**
  * @author baur
- * @date on 07.07.2020
+ * @date on 01.07.2020
  */
 
 
@@ -18,9 +18,9 @@ import javax.persistence.*;
 @EqualsAndHashCode
 public class User {
     private Integer id;
-    private String name;
-    private String password;
+    private String username;
     private Region region;
+    private String password;
 
     @Id
     @Column(name = "id")
@@ -29,9 +29,9 @@ public class User {
     }
 
     @Basic
-    @Column(name = "name")
-    public String getName() {
-        return name;
+    @Column(name = "username")
+    public String getUsername() {
+        return username;
     }
 
     @Basic

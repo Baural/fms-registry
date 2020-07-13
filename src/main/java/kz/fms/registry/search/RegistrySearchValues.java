@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * @author baur
- * @date on 09.07.2020
+ * @date on 01.07.2020
  */
 
 
@@ -17,8 +17,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RegistrySearchValues {
 
-    private Long patientId;
-    private Long clinicId;
+    private Long patient;
+    private Long clinic;
 
     // постраничность
     private Integer pageNumber;

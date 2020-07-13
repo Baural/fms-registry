@@ -20,7 +20,7 @@ import java.util.NoSuchElementException;
 
 /**
  * @author baur
- * @date on 09.07.2020
+ * @date on 01.07.2020
  */
 
 @RestController
@@ -48,10 +48,10 @@ public class RegistryController {
             return new ResponseEntity("incorrect param: id MUST be null", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (registry.getPatientId() == null) {
+        if (registry.getPatient() == null) {
             return new ResponseEntity("missed param: patient", HttpStatus.NOT_ACCEPTABLE);
         }
-        if (registry.getClinicId() == null) {
+        if (registry.getClinic() == null) {
             return new ResponseEntity("missed param: clinic", HttpStatus.NOT_ACCEPTABLE);
         }
 
@@ -66,10 +66,10 @@ public class RegistryController {
             return new ResponseEntity("incorrect param: id MUST be null", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (registry.getPatientId() == null) {
+        if (registry.getPatient() == null) {
             return new ResponseEntity("missed param: patient", HttpStatus.NOT_ACCEPTABLE);
         }
-        if (registry.getClinicId() == null) {
+        if (registry.getClinic() == null) {
             return new ResponseEntity("missed param: clinic", HttpStatus.NOT_ACCEPTABLE);
         }
 
@@ -113,9 +113,9 @@ public class RegistryController {
     @PostMapping("/search")
     public ResponseEntity<Page<Registry>> search(@RequestBody RegistrySearchValues registrySearchValues) {
 
-        Long patientId = registrySearchValues.getPatientId() != null ? registrySearchValues.getPatientId() : null;
+        Long patient = registrySearchValues.getPatient() != null ? registrySearchValues.getPatient() : null;
 
-        Long clinicId = registrySearchValues.getClinicId() != null ? registrySearchValues.getClinicId() : null;
+        Long clinic = registrySearchValues.getClinic() != null ? registrySearchValues.getClinic() : null;
 
         String sortColumn = registrySearchValues.getSortColumn() != null ? registrySearchValues.getSortColumn() : null;
         String sortDirection = registrySearchValues.getSortDirection() != null ? registrySearchValues.getSortDirection() : null;
@@ -133,7 +133,7 @@ public class RegistryController {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
 
 
-        Page result = registryService.findByParams(patientId, clinicId, pageRequest);
+        Page result = registryService.findByParams(patient, clinic, pageRequest);
 
         return ResponseEntity.ok(result);
     }

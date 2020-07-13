@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  * @author baur
- * @date on 07.07.2020
+ * @date on 01.07.2020
  */
 
 
@@ -18,15 +18,16 @@ import java.util.Date;
 @Setter
 @EqualsAndHashCode
 public class Registry {
-    private Integer id;
+    private Long id;
     private Date publicationDate;
     private Date deadDate;
-    private Patient patientId;
-    private Clinic clinicId;
+    private Patient patient;
+    private Clinic clinic;
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -43,16 +44,16 @@ public class Registry {
     }
 
     @ManyToOne
-    @JoinColumn(name = "patient_id", referencedColumnName = "id")
-    public Patient getPatientId() {
-        return patientId;
+    @JoinColumn(name = "patient", referencedColumnName = "id")
+    public Patient getPatient() {
+        return patient;
     }
 
 
     @ManyToOne
-    @JoinColumn(name = "clinic_id", referencedColumnName = "id")
-    public Clinic getClinicId() {
-        return clinicId;
+    @JoinColumn(name = "clinic", referencedColumnName = "id")
+    public Clinic getClinic() {
+        return clinic;
     }
 
 }

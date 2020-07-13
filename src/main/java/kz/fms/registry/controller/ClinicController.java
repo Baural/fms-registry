@@ -50,11 +50,6 @@ public class ClinicController {
             return new ResponseEntity("missed param: clinic name", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (clinic.getRegion() != null) {
-
-            return new ResponseEntity("missed param: region id", HttpStatus.NOT_ACCEPTABLE);
-        }
-
         return ResponseEntity.ok(clinicService.add(clinic));
     }
 
@@ -71,12 +66,6 @@ public class ClinicController {
         if (clinic.getName() == null || clinic.getName().trim().length() == 0) {
             return new ResponseEntity("missed param: clinic name", HttpStatus.NOT_ACCEPTABLE);
         }
-
-        if (clinic.getRegion() != null) {
-
-            return new ResponseEntity("missed param: region id", HttpStatus.NOT_ACCEPTABLE);
-        }
-
 
         // save работает как на добавление, так и на обновление
         clinicService.update(clinic);
@@ -123,12 +112,12 @@ public class ClinicController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("/search")
-    public ResponseEntity<List<Clinic>> search(@RequestBody ClinicSearchValues clinicSearchValues) {
-
-        MyLogger.showMethodName("ClinicController: search() ---------------------------------------------------------- ");
-
-        return ResponseEntity.ok(clinicService.findByName(clinicSearchValues.getName()));
-    }
+//    @PostMapping("/search")
+//    public ResponseEntity<List<Clinic>> search(@RequestBody ClinicSearchValues clinicSearchValues) {
+//
+//        MyLogger.showMethodName("ClinicController: search() ---------------------------------------------------------- ");
+//
+//        return ResponseEntity.ok(clinicService.findByName(clinicSearchValues.getName()));
+//    }
 
 }

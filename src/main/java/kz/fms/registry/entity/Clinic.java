@@ -5,10 +5,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * @author baur
- * @date on 07.07.2020
+ * @date on 01.07.2020
  */
 
 
@@ -17,14 +18,15 @@ import javax.persistence.*;
 @Setter
 @EqualsAndHashCode
 public class Clinic {
-    private Integer id;
+    private Long id;
     private String name;
     private Region region;
 
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -33,7 +35,6 @@ public class Clinic {
     public String getName() {
         return name;
     }
-
 
     @ManyToOne
     @JoinColumn(name = "region", referencedColumnName = "id")

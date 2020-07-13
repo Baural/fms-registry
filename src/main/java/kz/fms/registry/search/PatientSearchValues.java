@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * @author baur
- * @date on 08.07.2020
+ * @date on 01.07.2020
  */
 @NoArgsConstructor
 @Setter

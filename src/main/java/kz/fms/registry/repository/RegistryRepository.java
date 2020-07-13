@@ -10,17 +10,17 @@ import org.springframework.stereotype.Repository;
 
 /**
  * @author baur
- * @date on 09.07.2020
+ * @date on 01.07.2020
  */
 
 @Repository
 public interface RegistryRepository extends JpaRepository<Registry, Long> {
     @Query("SELECT r FROM Registry r WHERE " +
-            "(:patient is null or r.patientId.id=:patient) and " +
-            "(:clinic is null or r.clinicId.id=:clinic)"
+            "(:patient is null or r.patient.id=:patient) and " +
+            "(:clinic is null or r.clinic.id=:clinic)"
     )
-    Page<Registry> findByParams(@Param("patient") Long patientId,
-                                   @Param("clinic") Long clinicId,
+    Page<Registry> findByParams(@Param("patient") Long patient,
+                                   @Param("clinic") Long clinic,
                                    Pageable pageable
     );
 }

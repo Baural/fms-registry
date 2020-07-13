@@ -34,9 +34,9 @@ public class ClinicService {
         repository.deleteById(id);
     }
 
-    public List<Clinic> findByName(String text){
-        return repository.findByName(text);
-    }
+//    public List<Clinic> findByName(String text){
+//        return repository.findByName(text);
+//    }
 
     public Clinic findById(Long id){
         return repository.findById(id).get(); // т.к. возвращается Optional - нужно получить объект методом get()

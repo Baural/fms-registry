@@ -4,14 +4,11 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * @author baur
- * @date on 07.07.2020
+ * @date on 01.07.2020
  */
 
 @Entity
@@ -19,12 +16,13 @@ import javax.persistence.Id;
 @Setter
 @EqualsAndHashCode
 public class Region {
-    private Integer id;
+    private Long id;
     private String name;
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
-    public Integer getId() {
+    @Column(name = "id")
+    public Long getId() {
         return id;
     }
 

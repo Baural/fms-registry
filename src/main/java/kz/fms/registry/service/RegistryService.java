@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * @author baur
- * @date on 09.07.2020
+ * @date on 01.07.2020
  */
 
 @Service
@@ -43,8 +43,8 @@ public class RegistryService {
     }
 
 
-    public Page findByParams(Long patientId, Long clinicId, PageRequest paging) {
-        return repository.findByParams(patientId, clinicId, paging);
+    public Page findByParams(Long patient, Long clinic, PageRequest paging) {
+        return repository.findByParams(patient, clinic, paging);
     }
 
     public Registry findById(Long id) {
